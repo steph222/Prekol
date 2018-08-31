@@ -1,97 +1,120 @@
-local slides
-local fontTitle
-local fontBody
-local diapositiva=1
-local button = false;
+local slides;
+local fontTitle;
+local fontBody;
 
 
-local x = 0;
-local y = 0;
-local w = 640;
-local h = 480;
+Node ={title="", body={},label="",text={}, paragraph="",items={}, item=""};
+
+--Slides information
+local slide = {all={
+			{title="First Title",body={
+				{label="Texto",text={
+					{paragraph="This page offers a brief overview of what it's like to use Markdown. The syntax page provides complete, detailed documentation for every feature, but Markdown should be very easy to pick up simply by looking at a few examples of it in action."},
+					{paragraph="The examples on this page are written in a before/after style, showing example syntax and the HTML output produced by Markdown."}}},
+				{label="Item",text={
+					{paragraph="First item"},
+					{paragraph="Second item"},
+					{paragraph="Third item"}}}	
+				}--end body
+			},--end tile
+			{title="Second Title",body={
+				{label="Texto",text={
+					{paragraph="A paragraph is simply one or more consecutive lines of text, separated by one or more blank lines. (A blank line is any line that looks like a blank line -- a line containing nothing spaces or tabs is considered blank.) Normal paragraphs should not be intended with spaces or tabs."}}},
+				{label="Item",text={
+					{paragraph="First item"}}},
+				}--end body
+			},--end tile
+			{title="Third Title",body={
+				{label="Item",text={
+					{paragraph="First item"},
+					{paragraph="Second item"},
+					{paragraph="Third item"}}}
+				}--end body
+			}--end tile
+	}--end all
+}--end slide
+
+
 
 function setup()
-	size(640,480)
-	stroke(255)
-	slides = assert(loadfile("example1.lua"))
+	size(640,480);
+	stroke(255);
+	slides = assert(loadfile("example1.lua"));
 	fontTitle = loadFont("data/Vera.ttf",30);
 	fontBody=loadFont("data/Vera.ttf",15);
-	slides()
+	img=loadImage("point.png")
+	--slides()
 end
 
 function draw()
 
-	background(255)
-	
-	displayTitle()
-	displayBody()
+	background(255);
+	node=slide;
+
+	displayTitle(slide,1);-- num represents the slide
 
 end
 
-function displayTitle()
-	textFont(fontTitle)
-	fill(19,195,43)
-	text(imprimeTitle(1),220,70)
-	--print(diapositiva)
+function displayTitle(node,position)
+	textFont(fontTitle);
+	fill(19,195,43);
+	text(node.all[position].title,200,70);
+	displayBody(node,position);
 end
 
-function displayBody()
-	textFont(fontBody)
-	local num=1
-	local num2=60
-	local pos=60
-	local pos2=0
+
+function displayBody(node,position)
+	textFont(fontBody);
 	fill(0)
-	for index=1, tamannoTexto(2), 1 do
-		local texto=imprimeCuerpo(2,index)--Se envia el número segundo el orden al cambiar de diapositiva
-		size=string.len(texto)
-		num=1
-		num2=60
-		for index=1,size,60 do
-			if string.len(texto)>=50 then
-				text(string.sub(texto,num,num2),70,50+pos+pos2)
-				num=num+60
-				num2=num2+60
-				pos2=pos2+20
+	space=0;
+	space2=0;
+	size=#node.all[position].body;
+	--Deployment body
+	for index=1,size,1 do
+		size2=#node.all[position].body[index].text;
+		--Deployment text and item
+		for index2=1, size2,1 do
+			opc=true
+			local parag=node.all[position].body[index].text[index2].paragraph;
+			if node.all[position].body[index].label=="Item" then
+				space2=20
+				image(img, 50+space2, 138+space, 15, 15)		
 			end
-			
-			--text(string.sub(texto,61,120),70,50+pos+40)
-			--text(string.sub(texto,121,180),70,50+pos+60)
-			--text(string.sub(texto,181,240),70,50+pos+80)
-			--text(string.sub(texto,241,300),70,50+pos+100)
+			-- Travel of parag string 
+			while opc==true do
+				--Evaluate if size of parag is greater or equal 60
 
+				if string.len(parag)>=60 then
+					--Evaluate if next or previous letter are black space 
+					if string.sub(parag,61,61)==" " then
+						text(string.sub(parag,1,61),70+space2,150+space)
+						parag=string.sub(parag,62)
+						
+					elseif string.sub(parag,59,59)==" " then
+						text(string.sub(parag,1,59),70+space2,150+space)
+						parag=string.sub(parag,60)
+					else
+						text(string.sub(parag,1,64),70+space2,150+space)
+						parag=string.sub(parag,65)
+					end
+					space=space+20;
+				else
+					text(parag,70+space2,150+space)
+					space=space+20;
+					opc=false
+				end
+			end
+			space=space+20;			
 		end
-		if tamannoItem(1)~=0 then
-			print("Tiene intems")
-		else
-			print("NO tienes")
-		end
-		pos=pos2+20
 	end
-
-	
-		
-	
 end
 
-function mousePressed()
-  if (mouseX > x and mouseX < x+w and mouseY > y and mouseY < y+h) then
-    button = not button
-    xnueva=mouseX
-    ynueva=mouseY
-    diapositiva=diapositiva+1
-  end
-  
-  print("Hola")
-  print(diapositiva)
-end
 
-function mouseMoved(x,y)
-  mouseX = x
-  mouseY = y
-end
 
 function keyPressed()
-	print(key)--Buscar el formato de key para evaluar si es un enter
-	--Pasar Diapositivas
+	print(key)
+	table=key
+	for i,v in pairs(table) do
+		print(v)
+	end
 end
