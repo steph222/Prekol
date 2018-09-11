@@ -8,6 +8,7 @@ local pass=1;
 
 
 
+
 Node ={title="", body={},label="",text={}, paragraph="",items={}, item="", nameImg=""};
 
 --Slides information
@@ -51,9 +52,9 @@ function setup()
 	fontEnd=loadFont("data/Vera.ttf",40);
 	img=loadImage("point.png")
 	structure = assert(loadfile("loadFile.lua"))
-
 	--imgBody=loadImage(slide.all[pass].body[3].nameImg)
 	--slides()
+	
 end
 
 function draw()
@@ -62,7 +63,7 @@ function draw()
 	node=slide;
 	readFile()
 	--loadImg()
-	bodystructure()
+	--bodystructure()
 
 end
 
@@ -112,7 +113,7 @@ end
 
 
 function extractItem( position, index)
-	local size=#node.all[position].body[index].text;
+	local size=#node.all[position].body[index].text;--change text x item
 	space=space+20
 	--If label Itemt is empty, return
 	if(node.all[position].body[index].text[cont]) then
