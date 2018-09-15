@@ -51,7 +51,9 @@ function setup()
 	fontBody=loadFont("data/Vera.ttf",15);
 	fontEnd=loadFont("data/Vera.ttf",40);
 	img=loadImage("point.png")
+	--Generate structure table
 	structure = assert(loadfile("loadFile.lua"))
+
 	--imgBody=loadImage(slide.all[pass].body[3].nameImg)
 	--slides()
 	
@@ -63,7 +65,7 @@ function draw()
 	node=slide;
 	readFile()
 	--loadImg()
-	--bodystructure()
+	bodystructure()
 
 end
 
